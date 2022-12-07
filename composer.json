@@ -1,0 +1,79 @@
+{
+    "name": "maize-tech/laravel-magic-login",
+    "description": "Laravel Magic Login",
+    "keywords": [
+        "maize-tech",
+        "laravel",
+        "magic",
+        "login",
+        "authentication",
+        "email"
+    ],
+    "homepage": "https://github.com/maize-tech/laravel-magic-login",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Enrico De Lazzari",
+            "email": "enrico.delazzari@h-farm.com",
+            "homepage": "https://innovation.h-farm.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "spatie/laravel-package-tools": "^1.13.0",
+        "illuminate/contracts": "^9.30.1",
+        "illuminate/database": "^9.30.1",
+        "illuminate/http": "^9.30.1",
+        "illuminate/routing": "^9.30.1",
+        "illuminate/support": "^9.30.1"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^6.0",
+        "nunomaduro/larastan": "^2.0.1",
+        "orchestra/testbench": "^7.0",
+        "pestphp/pest": "^1.21",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpunit/phpunit": "^9.5",
+        "spatie/laravel-ray": "^1.26",
+        "spatie/pest-plugin-test-time": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Maize\\MagicLogin\\": "src",
+            "Maize\\MagicLogin\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Maize\\MagicLogin\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "analyse": "APP_KEY='base64:WZWVY1aeHd5rooWQi7hyrXaizzW8VaEwqR3rFlfWfRs=' vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage",
+        "format": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Maize\\MagicLogin\\MagicLoginServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
