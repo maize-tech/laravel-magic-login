@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Maize\MagicLogin\Actions\SendMagicLinkAction;
 use Maize\MagicLogin\Http\Controllers\MagicLoginController;
 use Maize\MagicLogin\Http\Middleware\ValidateSignature;
 use Maize\MagicLogin\Models\MagicLogin;
@@ -64,6 +65,14 @@ class Config
     public static function forceSingle(): bool
     {
         return config('magic-login.force_single') ?? true;
+    }
+
+    public static function getSendNotificationAction(): SendMagicLinkAction
+    {
+        $notification = config('magic-login.send_notification_action')
+            ?? SendMagicLinkAction::class;
+
+        return app($notification);
     }
 
     public static function getRouteMethods(): array

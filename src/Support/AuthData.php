@@ -1,10 +1,9 @@
 <?php
 
-namespace Maize\MagicLogin;
+namespace Maize\MagicLogin\Support;
 
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
-use Maize\MagicLogin\Support\Config;
 
 class AuthData
 {

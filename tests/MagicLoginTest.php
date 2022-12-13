@@ -1,8 +1,10 @@
 <?php
 
-use Maize\MagicLogin\AuthData;
-use Maize\MagicLogin\MagicLink;
+use Illuminate\Support\Facades\Notification;
+use Maize\MagicLogin\Facades\MagicLink;
 use Maize\MagicLogin\Models\MagicLogin;
+use Maize\MagicLogin\Notifications\MagicLinkNotification;
+use Maize\MagicLogin\Support\AuthData;
 use Maize\MagicLogin\Tests\Support\Exceptions\InvalidSignatureTestException;
 use Maize\MagicLogin\Tests\Support\Models\Admin;
 use Maize\MagicLogin\Tests\Support\Models\User;
@@ -13,6 +15,8 @@ use function Spatie\PestPluginTestTime\testTime;
 
 it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, $expiration) {
     testTime()->freeze();
+
+    Notification::fake();
 
     $uri = $generator($user);
 
@@ -36,6 +40,8 @@ it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, 
 
     expect($model->expires_at->timestamp)
         ->toBe(now()->addMinutes($expiration)->timestamp);
+
+    Notification::assertNothingSent();
 })->with([
     [
         'user' => fn () => User::factory()->create(),
@@ -72,6 +78,82 @@ it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, 
     [
         'user' => fn () => Admin::factory()->create(),
         'generator' => fn () => fn ($user) => MagicLink::make(
+            authenticatable: $user,
+            redirectUrl: '/home'
+        ),
+        'redirectUrl' => '/home',
+        'guard' => 'web',
+        'expiration' => 120,
+    ],
+]);
+
+it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $expiration) {
+    testTime()->freeze();
+
+    Notification::fake();
+
+    $uri = $generator($user);
+
+    $query = parse_url($uri, PHP_URL_QUERY);
+    parse_str($query, $query);
+
+    $data = AuthData::fromString($query['data'])->toArray();
+
+    expect((int) $query['expires'])->toBe(
+        now()->addMinutes($expiration)->timestamp
+    );
+
+    $model = MagicLogin::first();
+
+    expect($model)
+        ->uuid->toBe($data['uuid'])
+        ->authenticatable_id->toBe($user->getKey())
+        ->authenticatable_type->toBe($user->getMorphClass())
+        ->guard->toBe($guard)
+        ->redirect_url->toBe($redirectUrl);
+
+    expect($model->expires_at->timestamp)
+        ->toBe(now()->addMinutes($expiration)->timestamp);
+
+    Notification::assertSentTo(
+        [$user], MagicLinkNotification::class
+    );
+})->with([
+    [
+        'user' => fn () => User::factory()->create(),
+        'generator' => fn () => fn ($user) => MagicLink::send(
+            authenticatable: $user,
+            redirectUrl: '/home'
+        ),
+        'redirectUrl' => '/home',
+        'guard' => 'web',
+        'expiration' => 120,
+    ],
+    [
+        'user' => fn () => User::factory()->create(),
+        'generator' => fn () => fn ($user) => MagicLink::send(
+            authenticatable: $user,
+            redirectUrl: '/dashboard',
+            expiration: now()->addMinutes(2000)
+        ),
+        'redirectUrl' => '/dashboard',
+        'guard' => 'web',
+        'expiration' => 2000,
+    ],
+    [
+        'user' => fn () => User::factory()->create(),
+        'generator' => fn () => fn ($user) => MagicLink::send(
+            authenticatable: $user,
+            redirectUrl: '/home',
+            guard: 'admin'
+        ),
+        'redirectUrl' => '/home',
+        'guard' => 'admin',
+        'expiration' => 120,
+    ],
+    [
+        'user' => fn () => Admin::factory()->create(),
+        'generator' => fn () => fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/home'
         ),

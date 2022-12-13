@@ -5,7 +5,7 @@ namespace Maize\MagicLogin\Tests\Support;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
-use Maize\MagicLogin\MagicLink;
+use Maize\MagicLogin\Facades\MagicLink;
 use Maize\MagicLogin\MagicLoginServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 

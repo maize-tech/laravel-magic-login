@@ -72,6 +72,9 @@
             "providers": [
                 "Maize\\MagicLogin\\MagicLoginServiceProvider"
             ]
+        },
+        "aliases": {
+            "MagicLink": "Maize\\MagicLogin\\Facades\\MagicLink"
         }
     },
     "minimum-stability": "dev",

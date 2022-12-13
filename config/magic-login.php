@@ -14,6 +14,8 @@ return [
 
     'force_single' => null,
 
+    'send_notification_action' => null,
+
     'route' => [
         'methods' => null,
 

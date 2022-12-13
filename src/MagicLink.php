@@ -6,20 +6,22 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Maize\MagicLogin\Support\AuthData;
 use Maize\MagicLogin\Support\Config;
 
 class MagicLink
 {
-    public static function make(
+    public function make(
         Authenticatable $authenticatable,
         string $redirectUrl,
         ?Carbon $expiration = null,
         ?string $routeName = null,
         ?string $guard = null,
         ?int $loginsLimit = null,
+        bool $notify = false
     ): string {
         if (Config::forceSingle()) {
-            static::revokeAll($authenticatable);
+            $this->revokeAll($authenticatable);
         }
 
         $model = Config::getModel()->create([
@@ -32,7 +34,7 @@ class MagicLink
             'expires_at' => Config::getExpiration($expiration),
         ]);
 
-        return URL::temporarySignedRoute(
+        $uri = URL::temporarySignedRoute(
             name: Config::getRouteName($routeName),
             expiration: Config::getExpiration($expiration),
             parameters: [
@@ -41,9 +43,37 @@ class MagicLink
                 ])->toString(),
             ],
         );
+
+        if ($notify) {
+            Config::getSendNotificationAction()(
+                uri: $uri,
+                model: $model
+            );
+        }
+
+        return $uri;
     }
 
-    public static function route()
+    public function send(
+        Authenticatable $authenticatable,
+        string $redirectUrl,
+        ?Carbon $expiration = null,
+        ?string $routeName = null,
+        ?string $guard = null,
+        ?int $loginsLimit = null,
+    ): string {
+        return static::make(
+            authenticatable: $authenticatable,
+            redirectUrl: $redirectUrl,
+            expiration: $expiration,
+            routeName: $routeName,
+            guard: $guard,
+            loginsLimit: $loginsLimit,
+            notify: true
+        );
+    }
+
+    public function route()
     {
         Route::match(
             methods: Config::getRouteMethods(),
@@ -54,7 +84,7 @@ class MagicLink
             ->middleware(Config::getRouteMiddleware());
     }
 
-    public static function revokeAll(Authenticatable $authenticatable): void
+    public function revokeAll(Authenticatable $authenticatable): void
     {
         Config::getModel()
             ->query()

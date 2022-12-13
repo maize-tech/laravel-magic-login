@@ -3,7 +3,7 @@
 namespace Maize\MagicLogin\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Maize\MagicLogin\AuthData;
+use Maize\MagicLogin\Support\AuthData;
 
 class MagicLoginRequest extends FormRequest
 {
