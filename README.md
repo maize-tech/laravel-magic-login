@@ -7,6 +7,8 @@
 
 Easily add passwordless authentication into your application.
 
+> This project is a work-in-progress. Code and documentation are currently under development and are subject to change.
+
 ## Installation
 
 You can install the package via composer:
@@ -227,8 +229,10 @@ Once done, you can already generate an invitation link to any model extending th
 use App\Models\User;
 use Maize\MagicLogin\Facades\MagicLink;
 
+$user = User::firstOrFail();
+
 $magicLink = MagicLink::make(
-    authenticatable: User::firstOrFail()
+    authenticatable: $user
 );
 ```
 
@@ -238,19 +242,23 @@ Optionally, you may also automatically send a notification email to the given us
 use App\Models\User;
 use Maize\MagicLogin\Facades\MagicLink;
 
+$user = User::firstOrFail();
+
 $magicLink = MagicLink::send(
-    authenticatable: User::firstOrFail()
+    authenticatable: $user
 );
 ```
 
-which is equals to use the `make` method with the `notify` parameter set to `true`:
+which is equals to using the `make` method with the `notify` parameter set to `true`:
 
 ``` php
 use App\Models\User;
 use Maize\MagicLogin\Facades\MagicLink;
 
+$user = User::firstOrFail();
+
 $magicLink = MagicLink::make(
-    authenticatable: User::firstOrFail(),
+    authenticatable: $user,
     notify: true
 );
 ```
