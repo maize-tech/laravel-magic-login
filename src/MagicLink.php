@@ -56,7 +56,7 @@ class MagicLink
 
     public function send(
         Authenticatable $authenticatable,
-        string $redirectUrl,
+        ?string $redirectUrl = null,
         ?Carbon $expiration = null,
         ?string $routeName = null,
         ?string $guard = null,
