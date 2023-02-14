@@ -17,17 +17,10 @@ You can install the package via composer:
 composer require maize-tech/laravel-magic-login
 ```
 
-You can publish and run the migrations with:
+You can publish the config and migration files and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="magic-login-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="magic-login-config"
+php artisan magic-login:install
 ```
 
 This is the contents of the published config file:
@@ -143,6 +136,18 @@ return [
 
     'send_notification_action' => null,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Notification class
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify the fully qualified class name of the magic link
+    | email notification.
+    | By default, the value is Maize\MagicLogin\Notifications\MagicLinkNotification::class
+    */
+
+    'notification' => null,
+
     'route' => [
 
         /*
@@ -213,7 +218,9 @@ return [
 
 ## Usage
 
-To use the package, all you have to do is including the magic link route in your routes file.
+### Basic
+
+To use the package, all you have to do is include the magic link route in your routes file.
 By default, you should include it under `routes/web.php`:
 
 ``` php
@@ -236,7 +243,11 @@ $magicLink = MagicLink::make(
 );
 ```
 
-Optionally, you may also automatically send a notification email to the given user using the `send` method:
+### Email notifications
+
+#### Send an email notification
+
+Optionally, you may also automatically send an email notification to the given user using the `send` method:
 
 ``` php
 use App\Models\User;
@@ -262,6 +273,146 @@ $magicLink = MagicLink::make(
     notify: true
 );
 ```
+
+#### Customize the notification class
+
+If needed, you can customize the email notification.
+All you have to do is creating your own notification and override the default `MagicLinkNotification` class:
+
+``` php
+use Illuminate\Notifications\Messages\MailMessage;
+use Maize\MagicLogin\Notifications\MagicLinkNotification;
+
+class CustomMagicLinkNotification extends MagicLinkNotification
+{
+    public function toMail($notifiable): MailMessage
+    {
+        return (new MailMessage)
+            ->line(__('This is my custom magic link notification message'))
+            ->action('Join now', $this->uri);
+    }
+}
+```
+
+Finally, you can update the `notification` attribute under `config/magic-login.php` with the new class path.
+
+### Force single link
+
+When enabled, users can only have one valid link at a time.
+This means that when a new link is created, all previously created links are invalidated.
+
+To enable this option, you can set the `force_single` attribute under `config/magic-login.php` to `true`.
+
+### Magic link generator options
+
+The package offers many useful parameters for the `make` method to allow you customizing every single magic link:
+
+- [`Redirect url`](#redirect-url)
+- [`Expiration time`](#expiration-time)
+- [`Route name`](#route-name)
+- [`Authentication guard`](#authentication-guard)
+- [`Logins limit`](#logins-limit)
+
+#### Redirect url
+
+You can provide a redirect url used after authenticating the user:
+
+``` php
+use App\Models\User;
+use Maize\MagicLogin\Facades\MagicLink;
+
+$user = User::firstOrFail();
+
+$magicLink = MagicLink::send(
+    authenticatable: $user,
+    redirectUrl: 'yourapplication.test/your-path'
+);
+```
+
+When not provided, the default value defined in `redirect_url` attribute under `config/magic-login.php` will be used.
+
+#### Expiration time
+
+You can define the amount of time before a magic link expires by providing a carbon instance or an integer with the amount of minutes:
+
+``` php
+use App\Models\User;
+use Maize\MagicLogin\Facades\MagicLink;
+
+$user = User::firstOrFail();
+
+$magicLink = MagicLink::send(
+    authenticatable: $user,
+    expiration: now()->addDays(10), // the link will expire in 10 days
+);
+
+$magicLink = MagicLink::send(
+    authenticatable: $user,
+    expiration: 60, // the link will expire in 1 hour (60 minutes)
+);
+```
+
+When not provided, the default value defined in `expiration` attribute under `config/magic-login.php` will be used.
+
+#### Route name
+
+You can define the route name used to generate the magic link:
+
+``` php
+use App\Models\User;
+use Maize\MagicLogin\Facades\MagicLink;
+
+$user = User::firstOrFail();
+
+$magicLink = MagicLink::send(
+    authenticatable: $user,
+    routeName: 'magic-link',
+);
+```
+
+When not provided, the default value defined in `route.name` attribute under `config/magic-login.php` will be used.
+
+#### Authentication guard
+
+You can define the authentication guard used to authenticate the user:
+
+``` php
+use App\Models\User;
+use Maize\MagicLogin\Facades\MagicLink;
+
+$user = User::firstOrFail();
+
+$magicLink = MagicLink::send(
+    authenticatable: $user,
+    guard: 'api' // the 'api' auth guard will be used
+);
+```
+
+When not provided, the default value defined in `guard` attribute under `config/magic-login.php` will be used.
+
+#### Logins limit
+
+You can define the amount of times a single link can be used before expiring.
+The value can be either -1, which lets the user login indefinitely, or any number greater than or equal to 1:
+
+``` php
+use App\Models\User;
+use Maize\MagicLogin\Facades\MagicLink;
+
+$user = User::firstOrFail();
+
+$magicLink = MagicLink::send(
+    authenticatable: $user,
+    loginsLimit: 5 // the link can be used 5 times at max
+);
+
+$magicLink = MagicLink::send(
+    authenticatable: $user,
+    loginsLimit: -1 // the link can be used an infinite amount of times
+);
+```
+
+When not provided, the default value defined in `logins_limit` attribute under `config/magic-login.php` will be used.
 
 ## Testing
 
