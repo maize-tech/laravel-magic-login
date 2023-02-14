@@ -10,7 +10,7 @@ class SendMagicLinkAction
 {
     public function __invoke(string $uri, MagicLogin $model): void
     {
-        $notification = Config::getNotification();
+        $notification = Config::getNotificationClass();
 
         Notification::send(
             [$model->authenticatable],

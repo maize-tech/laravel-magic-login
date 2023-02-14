@@ -274,14 +274,14 @@ $magicLink = MagicLink::make(
 
 #### Customize the notification class
 
-If needed, you can customize the email notification.
-All you have to do is creating your own notification and override the default `MagicLinkNotification` class:
+When needed, you can customize the email notification.
+All you have to do is create your own notification and override the default `MagicLinkNotification` class:
 
 ``` php
 use Illuminate\Notifications\Messages\MailMessage;
-use Maize\MagicLogin\Notifications\MagicLinkNotification;
+use Maize\MagicLogin\Notifications\MagicLinkNotification as BaseMagicLinkNotification;
 
-class CustomMagicLinkNotification extends MagicLinkNotification
+class MagicLinkNotification extends BaseMagicLinkNotification
 {
     public function toMail($notifiable): MailMessage
     {

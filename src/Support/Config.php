@@ -76,7 +76,7 @@ class Config
         return app($notification);
     }
 
-    public static function getNotification(): string
+    public static function getNotificationClass(): string
     {
         return config('magic-login.notification') ?? MagicLinkNotification::class;
     }
