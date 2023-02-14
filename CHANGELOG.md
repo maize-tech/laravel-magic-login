@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 1.3.0 - 2023-02-14
+
+### What's Changed
+
+- Added new install command
+- Added notification class customization
+- Allow integer value for expiration in `MagicLink::make` method
+
 ## 1.2.0 - 2023-02-13
 
 ### What's Changed
