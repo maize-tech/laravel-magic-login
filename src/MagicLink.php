@@ -14,7 +14,7 @@ class MagicLink
     public function make(
         Authenticatable $authenticatable,
         ?string $redirectUrl = null,
-        ?Carbon $expiration = null,
+        Carbon|int|null $expiration = null,
         ?string $routeName = null,
         ?string $guard = null,
         ?int $loginsLimit = null,
