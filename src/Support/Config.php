@@ -10,6 +10,7 @@ use Maize\MagicLogin\Actions\SendMagicLinkAction;
 use Maize\MagicLogin\Http\Controllers\MagicLoginController;
 use Maize\MagicLogin\Http\Middleware\ValidateSignature;
 use Maize\MagicLogin\Models\MagicLogin;
+use Maize\MagicLogin\Notifications\MagicLinkNotification;
 
 class Config
 {
@@ -73,6 +74,11 @@ class Config
             ?? SendMagicLinkAction::class;
 
         return app($notification);
+    }
+
+    public static function getNotification(): string
+    {
+        return config('magic-login.notification') ?? MagicLinkNotification::class;
     }
 
     public static function getRouteMethods(): array

@@ -110,6 +110,18 @@ return [
 
     'send_notification_action' => null,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Notification class
+    |--------------------------------------------------------------------------
+    |
+    | Here you can specify the fully qualified class name of the magic link
+    | email notification.
+    | By default, the value is Maize\MagicLogin\Notifications\MagicLinkNotification::class
+    */
+
+    'notification' => null,
+
     'route' => [
 
         /*
