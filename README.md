@@ -1,13 +1,11 @@
 # Laravel Magic Login
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/maize-tech/laravel-magic-login.svg?style=flat-square)](https://packagist.org/packages/maize-tech/laravel-magic-login)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/maize-tech/laravel-magic-login/run-tests?label=tests)](https://github.com/maize-tech/laravel-magic-login/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/maize-tech/laravel-magic-login/Fix%20PHP%20code%20style%20issues?label=code%20style)](https://github.com/maize-tech/laravel-magic-login/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/maize-tech/laravel-magic-login/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/maize-tech/laravel-magic-login/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/maize-tech/laravel-magic-login/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/maize-tech/laravel-magic-login/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/maize-tech/laravel-magic-login.svg?style=flat-square)](https://packagist.org/packages/maize-tech/laravel-magic-login)
 
 Easily add passwordless authentication into your application.
-
-> This project is a work-in-progress. Code and documentation are currently under development and are subject to change.
 
 ## Installation
 
