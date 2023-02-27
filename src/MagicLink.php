@@ -18,6 +18,7 @@ class MagicLink
         ?string $routeName = null,
         ?string $guard = null,
         ?int $loginsLimit = null,
+        array $metadata = [],
         bool $notify = false
     ): string {
         if (Config::forceSingle()) {
@@ -32,6 +33,7 @@ class MagicLink
             'guard' => Config::getGuard($guard),
             'redirect_url' => Config::getRedirectUrl($redirectUrl),
             'expires_at' => Config::getExpiration($expiration),
+            'metadata' => $metadata,
         ]);
 
         $uri = URL::temporarySignedRoute(

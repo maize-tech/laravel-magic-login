@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('guard');
             $table->string('redirect_url');
             $table->datetime('expires_at');
+            $table->json('metadata');
             $table->timestamps();
         });
     }

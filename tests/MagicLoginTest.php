@@ -426,6 +426,23 @@ it('can revoke all uri for single user', function ($force, $count) {
     ['force' => false, 'count' => 2],
 ]);
 
+it('can store metadata', function ($metadata, $count) {
+    $user = User::factory()->create();
+
+    MagicLink::make(
+        authenticatable: $user,
+        redirectUrl: '/home',
+        metadata: $metadata,
+    );
+
+    expect(
+        MagicLogin::query()->where('metadata->test', true)->count()
+    )->toBe($count);
+})->with([
+    ['metadata' => ['test' => true], 'count' => 1],
+    ['metadata' => ['test' => false], 'count' => 0],
+]);
+
 it('can fail with guest user', function ($route) {
     assertGuest()
         ->getJson($route)

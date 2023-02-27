@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $guard
  * @property string $redirect_url
  * @property DateTime $expires_at
+ * @property array $metadata
  */
 class MagicLogin extends Model
 {
@@ -39,11 +40,13 @@ class MagicLogin extends Model
         'guard',
         'redirect_url',
         'expires_at',
+        'metadata',
     ];
 
     /** @var array<string, string> */
     protected $casts = [
         'expires_at' => 'datetime',
+        'metadata' => 'array',
     ];
 
     public function authenticatable(): MorphTo

@@ -310,6 +310,7 @@ The package offers many useful parameters for the `make` method to allow you cus
 - [`Route name`](#route-name)
 - [`Authentication guard`](#authentication-guard)
 - [`Logins limit`](#logins-limit)
+- [`Custom metadata`](#custom-metadata)
 
 #### Redirect url
 
@@ -411,6 +412,31 @@ $magicLink = MagicLink::send(
 ```
 
 When not provided, the default value defined in `logins_limit` attribute under `config/magic-login.php` will be used.
+
+#### Custom metadata
+
+Optionally, you can store custom metadata in case you need to perform custom queries.
+
+``` php
+use App\Models\User;
+use Maize\MagicLogin\Facades\MagicLink;
+use Maize\MagicLogin\Models\MagicLogin;
+
+$user = User::firstOrFail();
+
+$magicLink = MagicLink::send(
+    authenticatable: $user,
+    metadata: ['test' => true]
+);
+
+MagicLogin::query()
+    ->whereJsonContains('metadata->test', true)
+    ->count(); // returns 1
+
+MagicLogin::query()
+    ->whereJsonContains('metadata->test', false)
+    ->count(); // returns 0
+```
 
 ## Testing
 
