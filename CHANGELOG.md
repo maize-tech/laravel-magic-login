@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 2.0.0 - 2023-02-27
+
+### What's Changed
+
+- Added metadata attribute to MagicLogin model
+
 ## 1.3.0 - 2023-02-14
 
 ### What's Changed
