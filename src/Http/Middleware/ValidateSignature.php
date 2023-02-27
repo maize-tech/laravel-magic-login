@@ -13,7 +13,6 @@ class ValidateSignature extends BaseValidateSignature
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @param  string|null  $relative
      * @return \Illuminate\Http\Response
      *
