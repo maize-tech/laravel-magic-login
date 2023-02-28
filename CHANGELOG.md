@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 2.0.1 - 2023-02-28
+
+### What's Changed
+
+- Added metadata attribute to `MagicLink::send` method
+- Added method documentation
+- Fixed authenticatable attribute type
+
 ## 2.0.0 - 2023-02-27
 
 ### What's Changed
