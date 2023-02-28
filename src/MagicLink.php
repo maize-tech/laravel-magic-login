@@ -63,6 +63,7 @@ class MagicLink
         ?string $routeName = null,
         ?string $guard = null,
         ?int $loginsLimit = null,
+        array $metadata = [],
     ): string {
         return static::make(
             authenticatable: $authenticatable,
@@ -71,6 +72,7 @@ class MagicLink
             routeName: $routeName,
             guard: $guard,
             loginsLimit: $loginsLimit,
+            metadata: $metadata,
             notify: true
         );
     }
