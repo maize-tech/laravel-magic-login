@@ -9,19 +9,10 @@ use Maize\MagicLogin\Support\Config;
 
 class ValidateSignature extends BaseValidateSignature
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string|null  $relative
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Illuminate\Routing\Exceptions\InvalidSignatureException
-     */
-    public function handle($request, Closure $next, $relative = null)
+    public function handle($request, Closure $next, ...$args)
     {
         try {
-            return parent::handle($request, $next, $relative);
+            return parent::handle($request, $next, ...$args);
         } catch (InvalidSignatureException $e) {
             throw Config::getException();
         }
