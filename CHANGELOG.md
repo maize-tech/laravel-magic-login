@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 2.1.0 - 2023-05-15
+
+### What's Changed
+
+- Updated ValidateSignature middleware
+- Dropped support to Laravel 9
+
 ## 2.0.1 - 2023-02-28
 
 ### What's Changed
