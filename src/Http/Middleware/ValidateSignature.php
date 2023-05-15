@@ -13,15 +13,16 @@ class ValidateSignature extends BaseValidateSignature
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  string|null  $relative
+     * @param  \Closure  $next
+     * @param  array|null  $args
      * @return \Illuminate\Http\Response
      *
      * @throws \Illuminate\Routing\Exceptions\InvalidSignatureException
      */
-    public function handle($request, Closure $next, $relative = null)
+    public function handle($request, Closure $next, ...$args)
     {
         try {
-            return parent::handle($request, $next, $relative);
+            return parent::handle($request, $next, ...$args);
         } catch (InvalidSignatureException $e) {
             throw Config::getException();
         }
