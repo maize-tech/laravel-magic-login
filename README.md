@@ -1,3 +1,11 @@
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="/art/socialcard-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="/art/socialcard-light.png">
+  <img src="/art/socialcard-light.png" alt="Social Card of Laravel Magic Login">
+</picture>
+</p>
+
 # Laravel Magic Login
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/maize-tech/laravel-magic-login.svg?style=flat-square)](https://packagist.org/packages/maize-tech/laravel-magic-login)
