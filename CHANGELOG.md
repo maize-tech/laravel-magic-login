@@ -2,6 +2,10 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 2.1.1 - 2023-07-17
+
+- FIX missing string translation
+
 ## 2.1.0 - 2023-05-15
 
 ### What's Changed
