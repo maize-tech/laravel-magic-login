@@ -22,7 +22,7 @@ class Config
         return new $model;
     }
 
-    public static function getExpiration(Carbon|int|null $expiration = null): Carbon
+    public static function getExpiration(Carbon|int $expiration = null): Carbon
     {
         $expiration ??= config('magic-login.expiration')
             ?? 120;
@@ -34,21 +34,21 @@ class Config
         return now()->addMinutes($expiration);
     }
 
-    public static function getGuard(?string $guard = null): string
+    public static function getGuard(string $guard = null): string
     {
         return $guard
             ?? config('magic-login.guard')
             ?? 'web';
     }
 
-    public static function getRedirectUrl(?string $redirectUrl = null): string
+    public static function getRedirectUrl(string $redirectUrl = null): string
     {
         return $redirectUrl
             ?? config('magic-login.redirect_url')
             ?? throw new Exception('The redirect url is required.');
     }
 
-    public static function getLoginLimits(?int $loginLimits = null): int
+    public static function getLoginLimits(int $loginLimits = null): int
     {
         $loginLimits ??= config('magic-login.logins_limit') ?? -1;
 
@@ -89,28 +89,28 @@ class Config
         return Arr::wrap($method);
     }
 
-    public static function getRouteUri(?string $uri = null): string
+    public static function getRouteUri(string $uri = null): string
     {
         return $uri
             ?? config('magic-login.route.uri')
             ?? 'magic-login';
     }
 
-    public static function getRouteName(?string $name = null): string
+    public static function getRouteName(string $name = null): string
     {
         return $name
             ?? config('magic-login.route.name')
             ?? 'magic-login';
     }
 
-    public static function getRouteController(?string $controller = null): string
+    public static function getRouteController(string $controller = null): string
     {
         return $controller
             ?? config('magic-login.route.controller')
             ?? MagicLoginController::class;
     }
 
-    public static function getRouteMiddleware(array|string|null $middleware = null): array
+    public static function getRouteMiddleware(array|string $middleware = null): array
     {
         $middleware ??= config('magic-login.route.middleware')
             ?? ValidateSignature::class;
