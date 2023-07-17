@@ -41,7 +41,7 @@ class MagicLinkNotification extends Notification
     {
         return (new MailMessage)
             ->line(__('You are receiving this email because we received a sign in request for your account.'))
-            ->action('Sign in', $this->uri)
+            ->action(__('Sign in'), $this->uri)
             ->line(__('This sign in link will expire at :date.', ['date' => $this->model->expires_at]));
     }
 

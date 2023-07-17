@@ -295,7 +295,7 @@ class MagicLinkNotification extends BaseMagicLinkNotification
     {
         return (new MailMessage)
             ->line(__('This is my custom magic link notification message'))
-            ->action('Join now', $this->uri);
+            ->action(__('Join now'), $this->uri);
     }
 }
 ```
