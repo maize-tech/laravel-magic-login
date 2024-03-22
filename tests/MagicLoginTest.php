@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Notification;
 use Maize\MagicLogin\Facades\MagicLink;
 use Maize\MagicLogin\Models\MagicLogin;
@@ -8,17 +10,18 @@ use Maize\MagicLogin\Support\AuthData;
 use Maize\MagicLogin\Tests\Support\Exceptions\InvalidSignatureTestException;
 use Maize\MagicLogin\Tests\Support\Models\Admin;
 use Maize\MagicLogin\Tests\Support\Models\User;
+
 use function Pest\Laravel\assertAuthenticatedAs;
 use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\followingRedirects;
 use function Spatie\PestPluginTestTime\testTime;
 
-it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, $expiration) {
+it('can generate valid uri', function (Authenticatable&Model $user, $generator, $redirectUrl, $guard, $expiration) {
     testTime()->freeze();
 
     Notification::fake();
 
-    $uri = $generator($user);
+    $uri = $generator()($user);
 
     $query = parse_url($uri, PHP_URL_QUERY);
     parse_str($query, $query);
@@ -87,12 +90,12 @@ it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, 
     ],
 ]);
 
-it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $expiration) {
+it('can send valid uri', function (Authenticatable&Model $user, $generator, $redirectUrl, $guard, $expiration) {
     testTime()->freeze();
 
     Notification::fake();
 
-    $uri = $generator($user);
+    $uri = $generator()($user);
 
     $query = parse_url($uri, PHP_URL_QUERY);
     parse_str($query, $query);
@@ -163,8 +166,8 @@ it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $exp
     ],
 ]);
 
-it('can authenticate user', function ($user, $generator, $text, $status) {
-    $uri = $generator($user);
+it('can authenticate user', function (Authenticatable&Model $user, $generator, $text, $status) {
+    $uri = $generator()($user);
 
     followingRedirects()
         ->assertGuest()
@@ -198,8 +201,8 @@ it('can authenticate user', function ($user, $generator, $text, $status) {
     ],
 ]);
 
-it('can invalidate the old uri and regenerate a new one', function ($user, $generator, $text, $status) {
-    $uri1 = $generator($user);
+it('can invalidate the old uri and regenerate a new one', function (Authenticatable&Model $user, $generator, $text, $status) {
+    $uri1 = $generator()($user);
 
     followingRedirects()
         ->assertGuest()
@@ -209,7 +212,7 @@ it('can invalidate the old uri and regenerate a new one', function ($user, $gene
 
     auth()->logout();
 
-    $uri2 = $generator($user);
+    $uri2 = $generator()($user);
 
     followingRedirects()
         ->assertGuest()
@@ -243,10 +246,10 @@ it('can invalidate the old uri and regenerate a new one', function ($user, $gene
     ],
 ]);
 
-it('can force single uri for single user', function ($user, $generator, $text, $status) {
+it('can force single uri for single user', function (Authenticatable&Model $user, $generator, $text, $status) {
     config()->set('magic-login.force_single', false);
 
-    $uri1 = $generator($user);
+    $uri1 = $generator()($user);
 
     followingRedirects()
         ->assertGuest()
@@ -256,7 +259,7 @@ it('can force single uri for single user', function ($user, $generator, $text, $
 
     auth()->logout();
 
-    $uri2 = $generator($user);
+    $uri2 = $generator()($user);
 
     followingRedirects()
         ->assertGuest()
@@ -290,10 +293,10 @@ it('can force single uri for single user', function ($user, $generator, $text, $
     ],
 ]);
 
-it('can fail with invalid signature', function ($user, $generator, $text, $status) {
+it('can fail with invalid signature', function (Authenticatable&Model $user, $generator, $text, $status) {
     testTime()->freeze();
 
-    $uri = $generator($user);
+    $uri = $generator()($user);
 
     followingRedirects()
         ->assertGuest()

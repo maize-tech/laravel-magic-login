@@ -13,11 +13,11 @@ class MagicLink
 {
     public function make(
         Authenticatable $authenticatable,
-        string $redirectUrl = null,
-        Carbon|int $expiration = null,
-        string $routeName = null,
-        string $guard = null,
-        int $loginsLimit = null,
+        ?string $redirectUrl = null,
+        Carbon|int|null $expiration = null,
+        ?string $routeName = null,
+        ?string $guard = null,
+        ?int $loginsLimit = null,
         array $metadata = [],
         bool $notify = false
     ): string {
@@ -58,11 +58,11 @@ class MagicLink
 
     public function send(
         Authenticatable $authenticatable,
-        string $redirectUrl = null,
-        Carbon $expiration = null,
-        string $routeName = null,
-        string $guard = null,
-        int $loginsLimit = null,
+        ?string $redirectUrl = null,
+        ?Carbon $expiration = null,
+        ?string $routeName = null,
+        ?string $guard = null,
+        ?int $loginsLimit = null,
         array $metadata = [],
     ): string {
         return static::make(
