@@ -26,7 +26,7 @@ class MagicLoginController
 
             return redirect($model->redirect_url);
         } catch (Exception) {
-            auth()->guard($model?->guard)->logout();
+            auth()->guard()->logout();
             throw Config::getException();
         }
     }
