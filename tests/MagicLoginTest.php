@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Notification;
 use Maize\MagicLogin\Facades\MagicLink;
 use Maize\MagicLogin\Models\MagicLogin;
@@ -8,12 +10,13 @@ use Maize\MagicLogin\Support\AuthData;
 use Maize\MagicLogin\Tests\Support\Exceptions\InvalidSignatureTestException;
 use Maize\MagicLogin\Tests\Support\Models\Admin;
 use Maize\MagicLogin\Tests\Support\Models\User;
+
 use function Pest\Laravel\assertAuthenticatedAs;
 use function Pest\Laravel\assertGuest;
 use function Pest\Laravel\followingRedirects;
 use function Spatie\PestPluginTestTime\testTime;
 
-it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, $expiration) {
+it('can generate valid uri', function (Authenticatable&Model $user, $generator, $redirectUrl, $guard, $expiration) {
     testTime()->freeze();
 
     Notification::fake();
@@ -45,7 +48,7 @@ it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, 
 })->with([
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home'
         ),
@@ -55,7 +58,7 @@ it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, 
     ],
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/dashboard',
             expiration: now()->addMinutes(2000)
@@ -66,7 +69,7 @@ it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, 
     ],
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
             guard: 'admin'
@@ -77,7 +80,7 @@ it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, 
     ],
     [
         'user' => fn () => Admin::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home'
         ),
@@ -87,7 +90,7 @@ it('can generate valid uri', function ($user, $generator, $redirectUrl, $guard, 
     ],
 ]);
 
-it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $expiration) {
+it('can send valid uri', function (Authenticatable&Model $user, $generator, $redirectUrl, $guard, $expiration) {
     testTime()->freeze();
 
     Notification::fake();
@@ -121,7 +124,7 @@ it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $exp
 })->with([
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::send(
+        'generator' => fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/home'
         ),
@@ -131,7 +134,7 @@ it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $exp
     ],
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::send(
+        'generator' => fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/dashboard',
             expiration: now()->addMinutes(2000)
@@ -142,7 +145,7 @@ it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $exp
     ],
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::send(
+        'generator' => fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/home',
             guard: 'admin'
@@ -153,7 +156,7 @@ it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $exp
     ],
     [
         'user' => fn () => Admin::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::send(
+        'generator' => fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/home'
         ),
@@ -163,7 +166,7 @@ it('can send valid uri', function ($user, $generator, $redirectUrl, $guard, $exp
     ],
 ]);
 
-it('can authenticate user', function ($user, $generator, $text, $status) {
+it('can authenticate user', function (Authenticatable&Model $user, $generator, $text, $status) {
     $uri = $generator($user);
 
     followingRedirects()
@@ -180,7 +183,7 @@ it('can authenticate user', function ($user, $generator, $text, $status) {
 })->with([
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
         ),
@@ -189,7 +192,7 @@ it('can authenticate user', function ($user, $generator, $text, $status) {
     ],
     [
         'user' => fn () => Admin::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/dashboard',
         ),
@@ -198,7 +201,7 @@ it('can authenticate user', function ($user, $generator, $text, $status) {
     ],
 ]);
 
-it('can invalidate the old uri and regenerate a new one', function ($user, $generator, $text, $status) {
+it('can invalidate the old uri and regenerate a new one', function (Authenticatable&Model $user, $generator, $text, $status) {
     $uri1 = $generator($user);
 
     followingRedirects()
@@ -234,7 +237,7 @@ it('can invalidate the old uri and regenerate a new one', function ($user, $gene
 })->with([
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
         ),
@@ -243,7 +246,7 @@ it('can invalidate the old uri and regenerate a new one', function ($user, $gene
     ],
 ]);
 
-it('can force single uri for single user', function ($user, $generator, $text, $status) {
+it('can force single uri for single user', function (Authenticatable&Model $user, $generator, $text, $status) {
     config()->set('magic-login.force_single', false);
 
     $uri1 = $generator($user);
@@ -281,7 +284,7 @@ it('can force single uri for single user', function ($user, $generator, $text, $
 })->with([
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
         ),
@@ -290,7 +293,7 @@ it('can force single uri for single user', function ($user, $generator, $text, $
     ],
 ]);
 
-it('can fail with invalid signature', function ($user, $generator, $text, $status) {
+it('can fail with invalid signature', function (Authenticatable&Model $user, $generator, $text, $status) {
     testTime()->freeze();
 
     $uri = $generator($user);
@@ -305,7 +308,7 @@ it('can fail with invalid signature', function ($user, $generator, $text, $statu
 })->with([
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
             expiration: now()->subMinutes(2000)
@@ -315,7 +318,7 @@ it('can fail with invalid signature', function ($user, $generator, $text, $statu
     ],
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => MagicLink::make(
+        'generator' => fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
         ).'tampered',
@@ -324,7 +327,7 @@ it('can fail with invalid signature', function ($user, $generator, $text, $statu
     ],
     [
         'user' => fn () => User::factory()->create(),
-        'generator' => fn () => fn ($user) => '/magic-login',
+        'generator' => fn ($user) => '/magic-login',
         'text' => 'Invalid signature.',
         'status' => 403,
     ],
