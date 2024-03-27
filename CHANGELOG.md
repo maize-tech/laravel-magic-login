@@ -2,6 +2,13 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 2.2.0 - 2024-03-27
+
+### What's Changed
+
+* UPDATE php8.3 by @enricodelazzari in https://github.com/maize-tech/laravel-magic-login/pull/14
+* ADD Laravel 11 compatibility by @enricodelazzari in https://github.com/maize-tech/laravel-magic-login/pull/18
+
 ## 2.1.1 - 2023-07-17
 
 - FIX missing string translation
