@@ -18,7 +18,7 @@ class MagicLoginRequest extends FormRequest
         return [];
     }
 
-    public function data(): array
+    public function data($key = null, $default = null): array
     {
         return AuthData::fromString(
             $this->get('data')
