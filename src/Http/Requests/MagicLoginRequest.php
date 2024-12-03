@@ -18,7 +18,7 @@ class MagicLoginRequest extends FormRequest
         return [];
     }
 
-    public function data(): array
+    public function getAuthData(): array
     {
         return AuthData::fromString(
             $this->get('data')
@@ -28,7 +28,7 @@ class MagicLoginRequest extends FormRequest
     public function uuid(): string
     {
         return data_get(
-            $this->data(),
+            $this->getAuthData(),
             'uuid'
         );
     }
