@@ -62,7 +62,7 @@ class MagicLogin extends Model
     public function login(): self
     {
         if (! $this->isAuthenticable()) {
-            throw new Exception();
+            throw new Exception;
         }
 
         $this->loadMissing('authenticatable');

@@ -123,6 +123,6 @@ class Config
         $exception = config('magic-login.exception')
             ?? InvalidSignatureException::class;
 
-        return new $exception();
+        return new $exception;
     }
 }
