@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 2.2.1 - 2024-12-03
+
+### What's Changed
+
+* Update MagicLoginRequest.php by @nathanjansen in https://github.com/maize-tech/laravel-magic-login/pull/27
+
+### New Contributors
+
+* @nathanjansen made their first contribution in https://github.com/maize-tech/laravel-magic-login/pull/27
+
+**Full Changelog**: https://github.com/maize-tech/laravel-magic-login/compare/2.2.0...2.2.1
+
 ## 2.2.0 - 2024-03-27
 
 ### What's Changed
