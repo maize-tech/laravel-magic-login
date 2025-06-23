@@ -47,46 +47,46 @@ it('can generate valid uri', function (Authenticatable&Model $user, $generator, 
     Notification::assertNothingSent();
 })->with([
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home'
         ),
-        'redirectUrl' => '/home',
-        'guard' => 'web',
-        'expiration' => 120,
+        '/home',
+        'web',
+        120,
     ],
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/dashboard',
             expiration: now()->addMinutes(2000)
         ),
-        'redirectUrl' => '/dashboard',
-        'guard' => 'web',
-        'expiration' => 2000,
+        '/dashboard',
+        'web',
+        2000,
     ],
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
             guard: 'admin'
         ),
-        'redirectUrl' => '/home',
-        'guard' => 'admin',
-        'expiration' => 120,
+        '/home',
+        'admin',
+        120,
     ],
     [
-        'user' => fn () => Admin::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => Admin::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home'
         ),
-        'redirectUrl' => '/home',
-        'guard' => 'web',
-        'expiration' => 120,
+        '/home',
+        'web',
+        120,
     ],
 ]);
 
@@ -123,46 +123,46 @@ it('can send valid uri', function (Authenticatable&Model $user, $generator, $red
     );
 })->with([
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::send(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/home'
         ),
-        'redirectUrl' => '/home',
-        'guard' => 'web',
-        'expiration' => 120,
+        '/home',
+        'web',
+        120,
     ],
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::send(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/dashboard',
             expiration: now()->addMinutes(2000)
         ),
-        'redirectUrl' => '/dashboard',
-        'guard' => 'web',
-        'expiration' => 2000,
+        '/dashboard',
+        'web',
+        2000,
     ],
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::send(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/home',
             guard: 'admin'
         ),
-        'redirectUrl' => '/home',
-        'guard' => 'admin',
-        'expiration' => 120,
+        '/home',
+        'admin',
+        120,
     ],
     [
-        'user' => fn () => Admin::factory()->create(),
-        'generator' => fn ($user) => MagicLink::send(
+        fn () => Admin::factory()->create(),
+        fn ($user) => MagicLink::send(
             authenticatable: $user,
             redirectUrl: '/home'
         ),
-        'redirectUrl' => '/home',
-        'guard' => 'web',
-        'expiration' => 120,
+        '/home',
+        'web',
+        120,
     ],
 ]);
 
@@ -182,22 +182,22 @@ it('can authenticate user', function (Authenticatable&Model $user, $generator, $
     assertGuest();
 })->with([
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
         ),
-        'text' => 'home',
-        'status' => 200,
+        'home',
+        200,
     ],
     [
-        'user' => fn () => Admin::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => Admin::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/dashboard',
         ),
-        'text' => 'dashboard',
-        'status' => 200,
+        'dashboard',
+        200,
     ],
 ]);
 
@@ -236,13 +236,13 @@ it('can invalidate the old uri and regenerate a new one', function (Authenticata
         ->assertSeeText($text);
 })->with([
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
         ),
-        'text' => 'home',
-        'status' => 200,
+        'home',
+        200,
     ],
 ]);
 
@@ -283,13 +283,13 @@ it('can force single uri for single user', function (Authenticatable&Model $user
         ->assertSeeText($text);
 })->with([
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
         ),
-        'text' => 'home',
-        'status' => 200,
+        'home',
+        200,
     ],
 ]);
 
@@ -307,29 +307,29 @@ it('can fail with invalid signature', function (Authenticatable&Model $user, $ge
     assertGuest();
 })->with([
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
             expiration: now()->subMinutes(2000)
         ),
-        'text' => 'Invalid signature.',
+        'Invalid signature.',
         'status' => 403,
     ],
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => MagicLink::make(
+        fn () => User::factory()->create(),
+        fn ($user) => MagicLink::make(
             authenticatable: $user,
             redirectUrl: '/home',
         ).'tampered',
-        'text' => 'Invalid signature.',
-        'status' => 403,
+        'Invalid signature.',
+        403,
     ],
     [
-        'user' => fn () => User::factory()->create(),
-        'generator' => fn ($user) => '/magic-login',
-        'text' => 'Invalid signature.',
-        'status' => 403,
+        fn () => User::factory()->create(),
+        fn ($user) => '/magic-login',
+        'Invalid signature.',
+        403,
     ],
 ]);
 
