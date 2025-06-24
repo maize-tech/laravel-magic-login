@@ -2,6 +2,14 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 2.3.0 - 2025-06-24
+
+### What's Changed
+
+* support laravel 12 by @enricodelazzari in https://github.com/maize-tech/laravel-magic-login/pull/30
+
+**Full Changelog**: https://github.com/maize-tech/laravel-magic-login/compare/2.2.1...2.3.0
+
 ## 2.2.1 - 2024-12-03
 
 ### What's Changed
