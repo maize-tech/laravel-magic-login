@@ -2,6 +2,17 @@
 
 All notable changes to `laravel-magic-login` will be documented in this file.
 
+## 2.4.0 - 2026-06-10
+
+### What's Changed
+
+* Bump stefanzweifel/git-auto-commit-action from 5 to 6 by @dependabot[bot] in https://github.com/maize-tech/laravel-magic-login/pull/33
+* Bump aglipanci/laravel-pint-action from 2.5 to 2.6 by @dependabot[bot] in https://github.com/maize-tech/laravel-magic-login/pull/34
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/maize-tech/laravel-magic-login/pull/38
+* Add Laravel 13 support by @enricodelazzari in https://github.com/maize-tech/laravel-magic-login/pull/43
+
+**Full Changelog**: https://github.com/maize-tech/laravel-magic-login/compare/2.3.0...2.4.0
+
 ## 2.3.0 - 2025-06-24
 
 ### What's Changed
