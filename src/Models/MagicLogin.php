@@ -31,7 +31,7 @@ class MagicLogin extends Model
     /** @var string */
     protected $primaryKey = 'uuid';
 
-    /** @var array<int, string> */
+    /** @var list<string> */
     protected $fillable = [
         'authenticatable_id',
         'authenticatable_type',
