@@ -314,7 +314,7 @@ it('can fail with invalid signature', function (Authenticatable&Model $user, $ge
             expiration: now()->subMinutes(2000)
         ),
         'Invalid signature.',
-        'status' => 403,
+        403,
     ],
     [
         fn () => User::factory()->create(),
@@ -425,8 +425,8 @@ it('can revoke all uri for single user', function ($force, $count) {
 
     expect(MagicLogin::count())->toBe(0);
 })->with([
-    ['force' => true, 'count' => 1],
-    ['force' => false, 'count' => 2],
+    [true, 1],
+    [false, 2],
 ]);
 
 it('can store metadata', function ($metadata, $count) {
@@ -442,8 +442,8 @@ it('can store metadata', function ($metadata, $count) {
         MagicLogin::query()->where('metadata->test', true)->count()
     )->toBe($count);
 })->with([
-    ['metadata' => ['test' => true], 'count' => 1],
-    ['metadata' => ['test' => false], 'count' => 0],
+    [['test' => true], 1],
+    [['test' => false], 0],
 ]);
 
 it('can fail with guest user', function ($route) {
