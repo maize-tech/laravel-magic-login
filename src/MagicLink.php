@@ -2,8 +2,8 @@
 
 namespace Maize\MagicLogin;
 
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use Maize\MagicLogin\Support\AuthData;
@@ -14,7 +14,7 @@ class MagicLink
     public function make(
         Authenticatable $authenticatable,
         ?string $redirectUrl = null,
-        Carbon|int|null $expiration = null,
+        CarbonInterface|int|null $expiration = null,
         ?string $routeName = null,
         ?string $guard = null,
         ?int $loginsLimit = null,
@@ -59,7 +59,7 @@ class MagicLink
     public function send(
         Authenticatable $authenticatable,
         ?string $redirectUrl = null,
-        ?Carbon $expiration = null,
+        ?CarbonInterface $expiration = null,
         ?string $routeName = null,
         ?string $guard = null,
         ?int $loginsLimit = null,
