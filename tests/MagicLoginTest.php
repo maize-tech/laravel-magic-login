@@ -1,7 +1,9 @@
 <?php
 
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Notification;
 use Maize\MagicLogin\Facades\MagicLink;
 use Maize\MagicLogin\Models\MagicLogin;
@@ -88,6 +90,36 @@ it('can generate valid uri', function (Authenticatable&Model $user, $generator, 
         'web',
         120,
     ],
+]);
+
+it('can generate valid uri with immutable dates', function ($expiration, int $minutes) {
+    Date::use(CarbonImmutable::class);
+
+    testTime()->freeze();
+
+    $user = User::factory()->create();
+
+    $uri = MagicLink::make(
+        authenticatable: $user,
+        redirectUrl: '/home',
+        expiration: value($expiration),
+    );
+
+    $query = parse_url($uri, PHP_URL_QUERY);
+    parse_str($query, $query);
+
+    expect((int) $query['expires'])->toBe(
+        now()->addMinutes($minutes)->timestamp
+    );
+
+    expect(MagicLogin::first()->expires_at->timestamp)
+        ->toBe(now()->addMinutes($minutes)->timestamp);
+
+    Date::useDefault();
+})->with([
+    [null, 120],
+    [30, 30],
+    [fn () => now()->addMinutes(2000), 2000],
 ]);
 
 it('can send valid uri', function (Authenticatable&Model $user, $generator, $redirectUrl, $guard, $expiration) {

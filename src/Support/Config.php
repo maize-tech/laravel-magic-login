@@ -2,10 +2,10 @@
 
 namespace Maize\MagicLogin\Support;
 
+use Carbon\CarbonInterface;
 use Exception;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
 use Maize\MagicLogin\Actions\SendMagicLinkAction;
 use Maize\MagicLogin\Http\Controllers\MagicLoginController;
 use Maize\MagicLogin\Http\Middleware\ValidateSignature;
@@ -22,12 +22,12 @@ class Config
         return new $model;
     }
 
-    public static function getExpiration(Carbon|int|null $expiration = null): Carbon
+    public static function getExpiration(CarbonInterface|int|null $expiration = null): CarbonInterface
     {
         $expiration ??= config('magic-login.expiration')
             ?? 120;
 
-        if ($expiration instanceof Carbon) {
+        if ($expiration instanceof CarbonInterface) {
             return $expiration;
         }
 
